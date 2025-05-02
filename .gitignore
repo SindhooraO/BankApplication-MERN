@@ -1,0 +1,29 @@
+# Ignore all node_modules
+/node_modules
+/client/node_modules
+/server/node_modules
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+/build
+/client/build
+/server/build
+
+# Env files
+.env
+.env.*.local
+/client/.env
+/server/.env
+
+# Coverage
+/coverage
+/client/coverage
+/server/coverage
+
+# OS junk
+.DS_Store
+Thumbs.db
