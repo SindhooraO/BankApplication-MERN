@@ -16,6 +16,9 @@ import AdminDashboard from "./components/AdminDashboard";
 import AdminUsers from "./components/AdminUsers";
 import AdminTransactions from "./components/AdminTransactions";
 import AdminSettings from "./components/AdminSettings";
+import AdminLoan from "./components/AdminLoan";
+import AdminMessages from "./components/AdminMessages";
+
 // import AdminReports from "./components/AdminReports";
 
 
@@ -46,6 +49,8 @@ function App() {
         <Route path="/adminTransactions" element={<AdminTransactions />} />
         {/* <Route path="/adminReports" element={<AdminReports />} /> */}
         <Route path="/adminSettings" element={<AdminSettings />} />
+        <Route path="/adminLoan" element={<AdminLoan />} />
+        <Route path="/adminMessages" element={<AdminMessages />} />
 
 
       </Routes>

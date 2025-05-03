@@ -6,6 +6,7 @@ require('dotenv').config();
 // Import your admin auth route
 const adminAuthRoutes = require('./routes/adminAuth');
 
+
 const app = express();
 
 // Apply CORS first
@@ -26,13 +27,18 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const authRoutes = require('./routes/authRoutes');
 const account = require('./routes/account');
 const admin = require('./routes/admin');
+const loanRoutes = require("./routes/loan");
+const contactRoutes = require("./routes/contact");
+
 
 app.use('/api/account', account);
 app.use('/api/auth', authRoutes);        // Login/Register
 // Mount the route
 app.use('/api/admin', adminAuthRoutes);// So /api/admin/login will work
-
 app.use('/api/auth/admin', admin);
+app.use("/api/loan", loanRoutes);
+app.use("/api/contact", contactRoutes);
+
 
 //  MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -41,6 +47,8 @@ mongoose.connect(process.env.MONGO_URI, {
 })
 .then(() => console.log(" MongoDB connected"))
 .catch((err) => console.error(" MongoDB connection error:", err));
+
+
 
 //  Start server
 const PORT = process.env.PORT || 5000;

@@ -8,11 +8,30 @@ const Dashboard = () => {
   const [linkedAccountNo, setLinkedAccountNo] = useState("");
   const [userName, setUserName] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
+  const [loanCount, setLoanCount] = useState(0);
+
   const [accountDetails, setAccountDetails] = useState({
     balance: 0,
     totalDeposits: 0,
     totalWithdrawals: 0,
   });
+  useEffect(() => {
+    const fetchLoanCount = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:5000/api/loan/user/count", {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        });
+        setLoanCount(response.data.count);
+      } catch (error) {
+        console.error("Error fetching loan count:", error);
+      }
+    };
+  
+    fetchLoanCount();
+  }, []);
+  
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -152,8 +171,8 @@ const Dashboard = () => {
               <StatBox label="Total Deposits" value={`₹ ${accountDetails.totalDeposits}`} />
               <StatBox label="Total Withdrawals" value={`₹ ${accountDetails.totalWithdrawals}`} />
               {/* <StatBox label="Total Transactions" value="₹ 0.0" /> You can add logic to fetch total transactions */}
-              <StatBox label="Loan" value="0" />
-            </div>
+              <StatBox label="Loans Applied" value={loanCount} />
+              </div>
           </section>
         </main>
       </div>

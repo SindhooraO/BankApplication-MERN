@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { PhoneCall, Landmark, Mail, AlertCircle } from "lucide-react";
 
 const Contact = () => {
+  const [form, setForm] = useState({ name: "", phone: "", message: "" });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:5000/api/contact", form);
+      alert("Message sent successfully!");
+      setForm({ name: "", phone: "", message: "" });
+    } catch (error) {
+      alert("Error sending message.");
+      console.error(error);
+    }
+  };
+
   return (
     <div className="bg-[#fbe8dc] shadow-md min-h-screen flex flex-col items-center justify-between">
       {/* Contact Header */}
@@ -13,29 +32,44 @@ const Contact = () => {
         </h3>
 
         {/* Contact Form */}
-        <form className="bg-white shadow-lg rounded-lg p-6 space-y-4 w-full max-w-md mx-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-lg rounded-lg p-6 space-y-4 w-full max-w-md mx-auto"
+        >
           <div className="text-left">
             <label className="block text-sm font-medium text-neutral-700 mb-1">Name</label>
             <input
               type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
               placeholder="Enter your name"
               className="w-full border border-neutral-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-rose-400"
+              required
             />
           </div>
           <div className="text-left">
             <label className="block text-sm font-medium text-neutral-700 mb-1">Phone No</label>
             <input
               type="tel"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
               placeholder="Enter your phone"
               className="w-full border border-neutral-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-rose-400"
+              required
             />
           </div>
           <div className="text-left">
             <label className="block text-sm font-medium text-neutral-700 mb-1">Message</label>
             <textarea
+              name="message"
               rows="4"
+              value={form.message}
+              onChange={handleChange}
               placeholder="Enter your message"
               className="w-full border border-neutral-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-rose-400"
+              required
             ></textarea>
           </div>
           <button
@@ -51,21 +85,21 @@ const Contact = () => {
       <div className="bg-neutral-100 mt-12 w-full px-6 py-8">
         <div className="flex flex-col md:flex-row justify-around text-center md:text-left gap-6">
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12  bg-[#fbe8dc] rounded-full flex items-center justify-center shadow">
+            <div className="w-12 h-12 bg-[#fbe8dc] rounded-full flex items-center justify-center shadow">
               <PhoneCall className="text-rose-700" />
             </div>
             <p className="font-semibold text-sm mt-2">24×7 Customer Support</p>
             <p className="text-slate-600 text-sm">1800–123–4567</p>
           </div>
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12  bg-[#fbe8dc] rounded-full flex items-center justify-center shadow">
+            <div className="w-12 h-12 bg-[#fbe8dc] rounded-full flex items-center justify-center shadow">
               <Landmark className="text-rose-700" />
             </div>
             <p className="font-semibold text-sm mt-2">About Bankly</p>
             <p className="text-slate-600 text-sm">Easy banking, smart loans</p>
           </div>
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12  bg-[#fbe8dc] rounded-full flex items-center justify-center shadow">
+            <div className="w-12 h-12 bg-[#fbe8dc] rounded-full flex items-center justify-center shadow">
               <Mail className="text-rose-700" />
             </div>
             <p className="font-semibold text-sm mt-2">Email Support</p>

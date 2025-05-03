@@ -13,7 +13,8 @@ import {
   FaUserPlus,
   FaCheckCircle,
   FaTimesCircle,
-  FaClock
+  FaClock,
+  FaEnvelope
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -29,6 +30,7 @@ const AdminDashboard = () => {
     pendingLoans: 0,
   });
   const [recentUsers, setRecentUsers] = useState([]);
+  const [loanApplications, setLoanApplications] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -55,9 +57,46 @@ const AdminDashboard = () => {
       }
     };
 
+    const fetchLoanApplications = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/loan/all", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setLoanApplications(response.data);
+      } catch (error) {
+        console.error("Error fetching loan applications:", error);
+      }
+    };
+
     fetchDashboardStats();
     fetchRecentUsers();
+    fetchLoanApplications();
   }, []);
+
+  useEffect(() => {
+    const countLoansByStatus = () => {
+      let approved = 0;
+      let rejected = 0;
+      let pending = 0;
+
+      loanApplications.forEach((loan) => {
+        if (loan.status === "Approved") approved++;
+        else if (loan.status === "Rejected") rejected++;
+        else if (loan.status === "Applied") pending++;
+      });
+
+      setDashboardStats((prevStats) => ({
+        ...prevStats,
+        approvedLoans: approved,
+        rejectedLoans: rejected,
+        pendingLoans: pending,
+      }));
+    };
+
+    if (loanApplications.length > 0) {
+      countLoansByStatus();
+    }
+  }, [loanApplications]);
 
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
@@ -69,35 +108,36 @@ const AdminDashboard = () => {
   return (
     <div className="flex min-h-screen text-gray-800 font-sans">
       {/* Sidebar */}
-     <aside className="w-64 min-h-screen bg-[#fbe8dc] border-r-4 border-red-700 p-6 flex flex-col justify-between shadow-2xl">
-                  <div>
-                    <div className="flex items-center gap-2 mb-10">
-                      <img src={require("../assets/bank.png")} alt="logo" className="h-6" />
-                      <span className="text-black font-bold text-lg">
-                        Bank<span className="text-red-600">ly</span>
-                      </span>
-                    </div>
-          
-                    <nav className="space-y-5 text-sm font-medium">
-                      <SidebarLink icon={<FaHome />} label="Dashboard" path="/adminDashboard" activePath={location.pathname} />
-                      <SidebarLink icon={<FaUsers />} label="Users" path="/adminUsers" activePath={location.pathname} />
-                      <SidebarLink icon={<FaExchangeAlt />} label="Transactions" path="/adminTransactions" activePath={location.pathname} />
-                      <SidebarLink icon={<FaMoneyBillWave />} label="Loan" path="/adminLoan" activePath={location.pathname} />
-                      <SidebarLink icon={<FaWallet />} label="Reports" path="/adminReports" activePath={location.pathname} />
-                      <SidebarLink icon={<FaCog />} label="Settings" path="/adminSettings" activePath={location.pathname} />
-                      
-                    </nav>
-                  </div>
-          
-                  <div className="mt-6 border-t pt-4">
-                    <button
-                      onClick={handleLogout}
-                      className="text-sm font-semibold text-red-600 flex items-center gap-2 hover:text-red-700 transition-all"
-                    >
-                      <FaSignOutAlt /> Logout
-                    </button>
-                  </div>
-                </aside>
+      <aside className="w-64 min-h-screen bg-[#fbe8dc] border-r-4 border-red-700 p-6 flex flex-col justify-between shadow-2xl">
+        <div>
+          <div className="flex items-center gap-2 mb-10">
+            <img src={require("../assets/bank.png")} alt="logo" className="h-6" />
+            <span className="text-black font-bold text-lg">
+              Bank<span className="text-red-600">ly</span>
+            </span>
+          </div>
+
+          <nav className="space-y-5 text-sm font-medium">
+            <SidebarLink icon={<FaHome />} label="Dashboard" path="/adminDashboard" activePath={location.pathname} />
+            <SidebarLink icon={<FaUsers />} label="Users" path="/adminUsers" activePath={location.pathname} />
+            <SidebarLink icon={<FaExchangeAlt />} label="Transactions" path="/adminTransactions" activePath={location.pathname} />
+            <SidebarLink icon={<FaMoneyBillWave />} label="Loan" path="/adminLoan" activePath={location.pathname} />
+            {/* <SidebarLink icon={<FaWallet />} label="Reports" path="/adminReports" activePath={location.pathname} /> */}
+            <SidebarLink icon={<FaEnvelope />} label="Messages" path="/adminMessages" activePath={location.pathname} />
+            <SidebarLink icon={<FaCog />} label="Settings" path="/adminSettings" activePath={location.pathname} />
+
+          </nav>
+        </div>
+
+        <div className="mt-6 border-t pt-4">
+          <button
+            onClick={handleLogout}
+            className="text-sm font-semibold text-red-600 flex items-center gap-2 hover:text-red-700 transition-all"
+          >
+            <FaSignOutAlt /> Logout
+          </button>
+        </div>
+      </aside>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-gradient-to-br from-[#fbe8dc] to-[#f8d6c8]">

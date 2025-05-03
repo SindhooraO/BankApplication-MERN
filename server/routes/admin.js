@@ -3,7 +3,9 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const AdminLogin = require('../models/AdminLogin');
 const protect = require('../middleware/authMiddleware'); // Use the correct middleware
-
+const User = require("../models/User");
+const Transaction = require("../models/Transaction");
+const AccountDetails = require("../models/AccountDetails");
 // Get Admin Details
 router.get('/details', protect, async (req, res) => { // Use protect middleware
   try {

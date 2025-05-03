@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   FaHome, FaMoneyBillWave, FaExchangeAlt, FaUser, FaSignOutAlt,
-  FaWallet, FaCog, FaUsers, FaRedoAlt
+  FaWallet, FaCog, FaUsers, FaRedoAlt,FaEnvelope
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -71,7 +71,8 @@ const AdminUsers = () => {
                   <SidebarLink icon={<FaUsers />} label="Users" path="/adminUsers" activePath={location.pathname} />
                   <SidebarLink icon={<FaExchangeAlt />} label="Transactions" path="/adminTransactions" activePath={location.pathname} />
                   <SidebarLink icon={<FaMoneyBillWave />} label="Loan" path="/adminLoan" activePath={location.pathname} />
-                  <SidebarLink icon={<FaWallet />} label="Reports" path="/adminReports" activePath={location.pathname} />
+                  {/* <SidebarLink icon={<FaWallet />} label="Reports" path="/adminReports" activePath={location.pathname} /> */}
+                              <SidebarLink icon={<FaEnvelope />} label="Messages" path="/adminMessages" activePath={location.pathname} />
                   <SidebarLink icon={<FaCog />} label="Settings" path="/adminSettings" activePath={location.pathname} />
                 </nav>
               </div>

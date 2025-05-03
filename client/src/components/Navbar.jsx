@@ -12,6 +12,9 @@ const Navbar = ({ isLoggedIn }) => {
   const isAdminUsers = location.pathname === "/adminUsers";
   const isAdminTransactions = location.pathname === "/adminTransactions";
   const isAdminSettings = location.pathname === "/adminSettings";
+  const isAdminLoan = location.pathname === "/adminLoan";
+  const isAdminMessages = location.pathname === "/adminMessages";
+
 
 
   const isDashboardPage = location.pathname.startsWith('/dashboard') && isLoggedIn;
@@ -23,6 +26,10 @@ const Navbar = ({ isLoggedIn }) => {
   if (isAdminUsers) return null;
   if (isAdminTransactions) return null;
   if (isAdminSettings) return null;
+  if (isAdminLoan) return null;
+  if (isAdminMessages) return null;
+
+
 
 
 
