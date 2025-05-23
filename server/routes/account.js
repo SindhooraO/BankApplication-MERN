@@ -83,7 +83,7 @@ router.post('/withdraw', authMiddleware, async (req, res) => {
     const transaction = new Transaction({
       user: req.user.id,
       type: 'Withdraw',
-      amount: -Math.abs(amount), // Store as negative value for withdrawal
+      amount: -Math.abs(amount), 
       accountNumber,
       accountName,
       bank,

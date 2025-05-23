@@ -4,8 +4,8 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const AdminLogin = require("../models/AdminLogin");
-const Transaction = require("../models/Transaction"); // <-- Required
-const User = require("../models/User"); // <-- Required
+const Transaction = require("../models/Transaction");
+const User = require("../models/User"); 
 
 
 router.post("/admin/login", async (req, res) => {
@@ -28,7 +28,6 @@ router.post("/admin/login", async (req, res) => {
   res.json({ token, user: admin });
 });
 // Get all transactions
-// Get all transactions
 router.get('/admin/transactions', async (req, res) => {
   try {
     // Fetching transactions and populating user field to get linkedAccountNo
@@ -38,7 +37,6 @@ router.get('/admin/transactions', async (req, res) => {
         select: 'linkedAccountNo firstName lastName phone',  // Fetch the linkedAccountNo and other user details if needed
       })
       .exec();
-      // console.log("Populated transactions:", transactions); // Log populated transactions
 
     res.json(transactions); // Respond with populated transactions
   } catch (error) {
